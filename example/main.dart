@@ -28,7 +28,7 @@ class _DemoAppState extends State<DemoApp> {
               onPressed: () => FunctionFilter.debounce(
                 this,
                 const Duration(milliseconds: 500),
-                    () {
+                () {
                   setState(() {
                     ++_counter;
                   });
@@ -41,7 +41,7 @@ class _DemoAppState extends State<DemoApp> {
               onPressed: () => FunctionFilter.throttle(
                 this,
                 const Duration(milliseconds: 500),
-                    () {
+                () {
                   setState(() {
                     ++_counter;
                   });
