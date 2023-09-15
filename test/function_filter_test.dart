@@ -11,7 +11,7 @@ final random = Random(DateTime.now().millisecondsSinceEpoch);
 void main() {
   group('debounce', () {
     var callCounter = 0;
-    void callback() => callCounter ++;
+    void callback() => callCounter++;
 
     setUp(() => callCounter = 0);
 
@@ -27,7 +27,7 @@ void main() {
 
     test('basic_test_with_lambda', () async {
       for (int i = 0; i < 5; i++) {
-        FunctionFilter.debounce('key', ms100, () => callCounter ++);
+        FunctionFilter.debounce('key', ms100, () => callCounter++);
         await Future.delayed(ms50);
       }
       await Future.delayed(ms100);
@@ -67,13 +67,13 @@ void main() {
     });
 
     test('reset_all_debounce', () async {
-      FunctionFilter.debounce('key1', ms100, () => callCounter ++);
-      FunctionFilter.debounce('key2', ms100, () => callCounter ++);
+      FunctionFilter.debounce('key1', ms100, () => callCounter++);
+      FunctionFilter.debounce('key2', ms100, () => callCounter++);
       await Future.delayed(ms35);
 
       FunctionFilter.resetAllDebounce();
-      FunctionFilter.debounce('key1', ms35, () => callCounter --);
-      FunctionFilter.debounce('key2', ms35, () => callCounter --);
+      FunctionFilter.debounce('key1', ms35, () => callCounter--);
+      FunctionFilter.debounce('key2', ms35, () => callCounter--);
 
       await Future.delayed(ms50);
 
@@ -81,11 +81,11 @@ void main() {
     });
 
     test('reset_single_debounce', () async {
-      FunctionFilter.debounce('key', ms100, () => callCounter ++);
+      FunctionFilter.debounce('key', ms100, () => callCounter++);
       await Future.delayed(ms35);
 
       FunctionFilter.resetDebounce('key');
-      FunctionFilter.debounce('key', ms35, () => callCounter --);
+      FunctionFilter.debounce('key', ms35, () => callCounter--);
 
       await Future.delayed(ms50);
 
@@ -95,25 +95,25 @@ void main() {
 
   group('throttle', () {
     var callCounter = 0;
-    void callback() => callCounter ++;
+    void callback() => callCounter++;
 
     setUp(() => callCounter = 0);
     tearDown(() async => await Future.delayed(ms100)); // Clear event loop
-    
+
     test('basic_test', () async {
       // Called time:
       // 0(✓) - 35 - 70 - 105(✓) - 140 - 185 - 210(✓) - 245 - 280 - 315(✓)
-      for (int i = 0; i < 10; i ++) {
+      for (int i = 0; i < 10; i++) {
         FunctionFilter.throttle('key', ms100, callback);
         await Future.delayed(ms35);
       }
-      
+
       expect(callCounter, 4);
     });
 
     test('basic_test_with_lambda', () async {
-      for (int i = 0; i < 10; i ++) {
-        FunctionFilter.throttle('key', ms100, () => callCounter ++);
+      for (int i = 0; i < 10; i++) {
+        FunctionFilter.throttle('key', ms100, () => callCounter++);
         await Future.delayed(ms35);
       }
 
@@ -121,7 +121,7 @@ void main() {
     });
 
     test('no_throttling', () async {
-      for (int i = 0; i < 10; i ++) {
+      for (int i = 0; i < 10; i++) {
         FunctionFilter.throttle('key', ms35, callback);
         await Future.delayed(ms50);
       }
@@ -131,7 +131,7 @@ void main() {
 
     test('object_key', () async {
       final key = Object();
-      for (int i = 0; i < 10; i ++) {
+      for (int i = 0; i < 10; i++) {
         FunctionFilter.throttle(key, ms100, callback);
         await Future.delayed(ms35);
       }
@@ -140,7 +140,7 @@ void main() {
     });
 
     test('test_reset_all_throttling', () async {
-      for (int i = 0; i < 10; i ++) {
+      for (int i = 0; i < 10; i++) {
         FunctionFilter.throttle('key1', ms100, callback);
         FunctionFilter.throttle('key2', ms100, callback);
         await Future.delayed(ms35);
@@ -151,7 +151,7 @@ void main() {
     });
 
     test('test_single_throttling', () async {
-      for (int i = 0; i < 10; i ++) {
+      for (int i = 0; i < 10; i++) {
         FunctionFilter.throttle(1, ms100, callback);
         await Future.delayed(ms35);
         FunctionFilter.resetThrottle(1);

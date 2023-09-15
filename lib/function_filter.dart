@@ -34,7 +34,6 @@ class FunctionFilter {
   /// function to be debounced again.
   static void resetDebounce(dynamic key) => _keyToStamp.remove(key);
 
-
   static final _throttleKeys = <dynamic>{};
 
   /// Throttles a function execution based on the specified [duration].
