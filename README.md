@@ -1,4 +1,4 @@
-A Dart library for function filtering utilities, providing tools for debouncing and throttling function executions based on time intervals.
+A Dart library for function filtering utilities, providing tools for debouncing and throttling function executions based on time intervals. This library is well-tested and easy to use, making it a reliable choice for managing function execution rates.
 
 ## Features
 
@@ -57,7 +57,21 @@ void main() {
 
 Please note that any key type is allowed for identifying functions in the debounce and throttle methods. You can use various types such as strings, numbers, objects, or any other value that helps uniquely identify your functions.
 
+```
+import 'package:function_filter/function_filter.dart';
 
+void main() {
+  final objKey = Object();
+  FunctionFilter.throttle(
+    objKey,
+    Duration(milliseconds: 500),
+    () {
+      // Your throttled function logic here
+      print('Throttled function called.');
+    },
+  );
+}
+```
 
 
 

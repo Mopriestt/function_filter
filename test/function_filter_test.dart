@@ -138,5 +138,26 @@ void main() {
 
       expect(callCounter, 4);
     });
+
+    test('test_reset_all_throttling', () async {
+      for (int i = 0; i < 10; i ++) {
+        FunctionFilter.throttle('key1', ms100, callback);
+        FunctionFilter.throttle('key2', ms100, callback);
+        await Future.delayed(ms35);
+        FunctionFilter.resetAllThrottle();
+      }
+
+      expect(callCounter, 20);
+    });
+
+    test('test_single_throttling', () async {
+      for (int i = 0; i < 10; i ++) {
+        FunctionFilter.throttle(1, ms100, callback);
+        await Future.delayed(ms35);
+        FunctionFilter.resetThrottle(1);
+      }
+
+      expect(callCounter, 10);
+    });
   });
 }
