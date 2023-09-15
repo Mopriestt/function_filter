@@ -1,3 +1,7 @@
+## 1.1.3
+
+* Include `CallAggregator` in example app.
+
 ## 1.1.2
 
 * Rename `Accumulator` to `CallAggregator`.
