@@ -58,19 +58,13 @@ void main() {
 Please note that any key type is allowed for identifying functions in the debounce and throttle methods. You can use various types such as strings, numbers, objects, or any other value that helps uniquely identify your functions.
 
 ```
-import 'package:function_filter/function_filter.dart';
 
-void main() {
-  final objKey = Object();
-  FunctionFilter.throttle(
-    objKey,
-    Duration(milliseconds: 500),
-    () {
-      // Your throttled function logic here
-      print('Throttled function called.');
-    },
-  );
-}
+final objKey = Object(); // Can be string, number, object such as Widget or model etc.
+FunctionFilter.throttle(
+  objKey,
+  Duration(milliseconds: 500),
+  () => print('Throttled function called.'),
+);
 ```
 
 
