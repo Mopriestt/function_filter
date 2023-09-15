@@ -1,3 +1,7 @@
+## 1.1.5
+
+* Formatting example app.
+
 ## 1.1.4
 
 * Formatting example app.
