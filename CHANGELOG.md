@@ -1,3 +1,7 @@
+## 1.0.0
+
+* Introduce `Debouncer` and `Throttler` function wrappers.
+
 ## 0.1.2
 
 * Add example app.

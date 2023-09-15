@@ -3,8 +3,8 @@ A Dart library for function filtering utilities, providing tools for debouncing 
 ## Features
 
  - Debouncing: Debounce function executions to delay their execution until a certain time has passed since the last invocation.
-
  - Throttling: Throttle function executions to limit their rate and ensure they are executed at most once within a specified interval.
+ - Offers both static function method and function wrapper for flexible usage.
 
 ## Usage
 
@@ -28,7 +28,7 @@ void main() {
 }
 ````
 
-Throttling
+### Throttling
 Throttling limits the rate at which a function can be executed. It ensures that a function is executed at most once every specified interval. This is helpful when you want to limit the number of times a function can run, especially in scenarios like handling scroll events.
 
 ```
@@ -58,6 +58,31 @@ FunctionFilter.throttle(
 );
 ```
 
+## Function Wrapper Examples
 
+### Debouncer Wrapper
 
+```
+final debouncer = Debouncer(Duration(milliseconds: 500), () {
+  print('Debounced function executed!');
+});
 
+// Trigger the debounced function multiple times in quick succession.
+for (int i = 1; i <= 5; i ++) {
+    debouncer.call();
+    await Future.delayed(Duration(milliseconds: 300));
+}
+```
+
+### Throttler Wrapper
+```
+final throttler = Throttler(Duration(milliseconds: 500), () {
+  print('Throttled function executed!');
+});
+
+// Trigger the throttled function multiple times in quick succession.
+for (int i = 1; i <= 5; i++) {
+  throttler.call();
+  await Future.delayed(Duration(milliseconds: 300));
+}
+```
