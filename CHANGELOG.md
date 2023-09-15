@@ -1,3 +1,7 @@
+## 1.1.0
+
+* Introduce `Accumulator` wrapper.
+
 ## 1.0.0
 
 * Introduce `Debouncer` and `Throttler` function wrappers.
