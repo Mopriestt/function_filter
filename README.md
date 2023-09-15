@@ -91,10 +91,10 @@ for (int i = 1; i <= 5; i++) {
 
 ### Accumulator Wrapper
 ```
+// Function will be executed if the accumulator gets called for 5 times within 2 seconds.
 final accumulator = Accumulator(Duration(seconds: 2), 5, () {
     print('Accumulated calls executed!')
 });
-
 for (int i = 0; i < 5; i++) {
   accumulator.call();
   await Future.delayed(const Duration(milliseconds: 10));
