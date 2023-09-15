@@ -1,3 +1,7 @@
+## 1.1.2
+
+* Rename `Accumulator` to `CallAggregator`.
+
 ## 1.1.1
 
 * Update README
