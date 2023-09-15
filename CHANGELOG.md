@@ -1,3 +1,7 @@
+## 1.1.4
+
+* Formatting example app.
+
 ## 1.1.3
 
 * Include `CallAggregator` in example app.
