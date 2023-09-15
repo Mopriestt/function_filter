@@ -4,7 +4,7 @@ A Dart library for function filtering utilities, providing tools for debouncing 
 
  - Debouncer: Debounce function executions to delay their execution until a certain time has passed since the last invocation.
  - Throttler: Throttle function executions to limit their rate and ensure they are executed at most once within a specified interval.
- - Accumulator: accumulates function calls and triggers execution when a specified number of calls occur within a given time duration.
+ - CallAggregator: Accumulates function calls and triggers execution when a specified number of calls occur within a given time duration.
  - Offers both static function method and function wrapper for flexible usage.
 
 ## Basic Usage
@@ -89,14 +89,14 @@ for (int i = 1; i <= 5; i++) {
 }
 ```
 
-### Accumulator Wrapper
+### CallAggregator Wrapper
 ```
-// Function will be executed if the accumulator gets called for 5 times within 2 seconds.
-final accumulator = Accumulator(Duration(seconds: 2), 5, () {
-    print('Accumulated calls executed!')
+// Function will be executed if the aggregator gets called for 5 times within 2 seconds.
+final aggregator = CallAggregator(Duration(seconds: 2), 5, () {
+    print('Aggregated calls executed!')
 });
 for (int i = 0; i < 5; i++) {
-  accumulator.call();
+  aggregator.call();
   await Future.delayed(const Duration(milliseconds: 10));
 }
 ```

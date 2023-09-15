@@ -2,7 +2,7 @@ import 'dart:async';
 
 /// A class that accumulates function calls and triggers execution
 /// when a specified number of calls occur within a given time duration.
-class Accumulator {
+class CallAggregator {
   /// The duration within which the required number of calls should be accumulated.
   final Duration _duration;
 
@@ -12,10 +12,10 @@ class Accumulator {
   /// The function to execute when the required call count is reached within the duration.
   final Function _runnable;
 
-  var _accumulatedCallCount = 0;
+  var _callCounter = 0;
   Timer? _resetTimer;
 
-  /// Creates an [Accumulator] instance.
+  /// Creates an [CallAggregator] instance.
   ///
   /// The [_duration] parameter specifies the time duration during which the
   /// required number of calls should be accumulated before execution.
@@ -25,7 +25,7 @@ class Accumulator {
   ///
   /// The [_runnable] parameter is a callback function that will be executed
   /// when the required number of calls is accumulated within the specified duration.
-  Accumulator(this._duration, this._requiredCallCount, this._runnable);
+  CallAggregator(this._duration, this._requiredCallCount, this._runnable);
 
   /// Accumulates a function call and triggers execution if the required call count is met.
   ///
@@ -36,17 +36,23 @@ class Accumulator {
   void call() {
     if (_resetTimer == null) {
       _resetTimer = Timer(_duration, () {
-        _accumulatedCallCount = 0;
+        _callCounter = 0;
         _resetTimer = null;
       });
     }
-    _accumulatedCallCount++;
-    if (_accumulatedCallCount == _requiredCallCount) {
+    _callCounter++;
+    if (_callCounter == _requiredCallCount) {
       _resetTimer?.cancel();
       _resetTimer = null;
-      _accumulatedCallCount = 0;
+      _callCounter = 0;
 
       _runnable();
     }
+  }
+
+  /// Resets the CallAggregator to abandon started call process.
+  void reset() {
+    _resetTimer?.cancel();
+    _resetTimer = null;
   }
 }
