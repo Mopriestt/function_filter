@@ -86,3 +86,15 @@ for (int i = 1; i <= 5; i++) {
   await Future.delayed(Duration(milliseconds: 300));
 }
 ```
+
+### Accumulator Wrapper
+```
+final accumulator = Accumulator(Duration(seconds: 2), 5, () {
+    print('Accumulated calls executed!')
+});
+
+for (int i = 0; i < 5; i++) {
+  accumulator.call();
+  await Future.delayed(const Duration(milliseconds: 10));
+}
+```
