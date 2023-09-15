@@ -11,7 +11,7 @@ A Dart library for function filtering utilities, providing tools for debouncing 
 To get started with the function_filter package, you need to include it as a dependency in your Dart project's pubspec.yaml file.
 ```
 dependencies:
-  function_filter: ^1.0.0
+  function_filter: ^x.y.z
 ```
 Then, run flutter pub get to fetch and install the package.
 
