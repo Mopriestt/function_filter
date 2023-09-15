@@ -1,7 +1,7 @@
 name: function_filter
 description: A dart library of function filter utils.
 version: 0.0.1
-homepage:
+homepage: https://github.com/Mopriestt/function_filter
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
