@@ -6,15 +6,6 @@ A Dart library for function filtering utilities, providing tools for debouncing 
 
  - Throttling: Throttle function executions to limit their rate and ensure they are executed at most once within a specified interval.
 
-## Getting started
-
-To get started with the function_filter package, you need to include it as a dependency in your Dart project's pubspec.yaml file.
-```
-dependencies:
-  function_filter: ^x.y.z
-```
-Then, run flutter pub get to fetch and install the package.
-
 ## Usage
 
 Here are some basic examples of how to use the function_filter library.
