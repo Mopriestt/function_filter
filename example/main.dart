@@ -1,23 +1,57 @@
+import 'package:flutter/material.dart';
 import 'package:function_filter/function_filter.dart';
 
-void main() async {
-  for (int i = 1; i <= 5; i++) {
-    FunctionFilter.debounce(
-      'debounceKey',
-      Duration(milliseconds: 300),
-      () => print('Debounced function called ($i)'),
-    );
-    await Future.delayed(const Duration(milliseconds: 200));
-  }
+void main() {
+  runApp(const MaterialApp(home: DemoApp()));
+}
 
-  await Future.delayed(const Duration(milliseconds: 300));
+class DemoApp extends StatefulWidget {
+  const DemoApp({super.key});
 
-  for (int i = 1; i <= 5; i++) {
-    FunctionFilter.throttle(
-      'throttleKey',
-      Duration(milliseconds: 300),
-      () => print('Throttled function called ($i)'),
+  @override
+  State<StatefulWidget> createState() => _DemoAppState();
+}
+
+class _DemoAppState extends State<DemoApp> {
+  var _counter = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          children: [
+            SizedBox(height: 100),
+            Text('$_counter'),
+            SizedBox(height: 50),
+            MaterialButton(
+              onPressed: () => FunctionFilter.debounce(
+                this,
+                const Duration(milliseconds: 500),
+                    () {
+                  setState(() {
+                    ++_counter;
+                  });
+                },
+              ),
+              child: Text('Debounce +1'),
+            ),
+            SizedBox(height: 50),
+            MaterialButton(
+              onPressed: () => FunctionFilter.throttle(
+                this,
+                const Duration(milliseconds: 500),
+                    () {
+                  setState(() {
+                    ++_counter;
+                  });
+                },
+              ),
+              child: Text('Throttle +1'),
+            ),
+          ],
+        ),
+      ),
     );
-    await Future.delayed(const Duration(milliseconds: 200));
   }
 }
