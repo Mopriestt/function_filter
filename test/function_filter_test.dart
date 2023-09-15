@@ -1,12 +1,11 @@
 import 'dart:math';
 
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:function_filter/function_filter.dart';
 
 const ms100 = Duration(milliseconds: 100);
 const ms50 = Duration(milliseconds: 50);
 const ms35 = Duration(milliseconds: 35);
-final random = Random(DateTime.now().millisecondsSinceEpoch);
 
 void main() {
   group('debounce', () {
