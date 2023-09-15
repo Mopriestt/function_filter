@@ -1,3 +1,7 @@
+## 0.1.2
+
+* Add example app.
+
 ## 0.1.1
 
 * Support older version of Dart.
