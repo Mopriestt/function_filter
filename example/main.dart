@@ -18,7 +18,7 @@ class _DemoAppState extends State<DemoApp> {
   late final _aggregator = CallAggregator(
     const Duration(seconds: 2),
     5,
-        () => setState(() => _counter++),
+    () => setState(() => _counter++),
   );
 
   @override
@@ -34,7 +34,7 @@ class _DemoAppState extends State<DemoApp> {
               onPressed: () => FunctionFilter.debounce(
                 this,
                 const Duration(milliseconds: 500),
-                    () {
+                () {
                   setState(() {
                     ++_counter;
                   });
@@ -47,7 +47,7 @@ class _DemoAppState extends State<DemoApp> {
               onPressed: () => FunctionFilter.throttle(
                 this,
                 const Duration(milliseconds: 500),
-                    () {
+                () {
                   setState(() {
                     ++_counter;
                   });
