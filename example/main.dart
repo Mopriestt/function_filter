@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:function_filter/src/call_aggregator.dart';
-import 'package:function_filter/src/function_filter.dart';
+import 'package:function_filter/function_filter.dart';
 
 void main() {
   runApp(const MaterialApp(home: DemoApp()));
@@ -18,7 +17,7 @@ class _DemoAppState extends State<DemoApp> {
   late final _aggregator = CallAggregator(
     const Duration(seconds: 2),
     5,
-    () => setState(() => _counter++),
+        () => setState(() => _counter++),
   );
 
   @override
@@ -34,7 +33,7 @@ class _DemoAppState extends State<DemoApp> {
               onPressed: () => FunctionFilter.debounce(
                 this,
                 const Duration(milliseconds: 500),
-                () => setState(() => _counter++),
+                    () => setState(() => _counter++),
               ),
               child: Text('Debounce +1'),
             ),
@@ -43,7 +42,7 @@ class _DemoAppState extends State<DemoApp> {
               onPressed: () => FunctionFilter.throttle(
                 this,
                 const Duration(milliseconds: 500),
-                () => setState(() => _counter++),
+                    () => setState(() => _counter++),
               ),
               child: Text('Throttle +1'),
             ),
