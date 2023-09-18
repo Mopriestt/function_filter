@@ -1,3 +1,7 @@
+## 2.0.0
+
+* Update package structure.
+
 ## 1.1.5
 
 * Formatting example app.
