@@ -1,5 +1,3 @@
-library function_filter;
-
 /// A class that provides throttle functionality for a given function.
 ///
 /// The [Throttler] class allows you to create a throttled function, which will

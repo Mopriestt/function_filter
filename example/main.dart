@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:function_filter/call_aggregator.dart';
-import 'package:function_filter/function_filter.dart';
+import 'package:function_filter/src/call_aggregator.dart';
+import 'package:function_filter/src/function_filter.dart';
 
 void main() {
   runApp(const MaterialApp(home: DemoApp()));

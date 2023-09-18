@@ -1,5 +1,5 @@
-import 'package:test/test.dart';
 import 'package:function_filter/function_filter.dart';
+import 'package:test/test.dart';
 
 const ms100 = Duration(milliseconds: 100);
 const ms50 = Duration(milliseconds: 50);

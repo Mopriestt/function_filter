@@ -1,4 +1,4 @@
-import 'package:function_filter/debouncer.dart';
+import 'package:function_filter/function_filter.dart';
 import 'package:test/test.dart';
 
 import 'function_filter_test.dart';

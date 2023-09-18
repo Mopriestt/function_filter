@@ -1,5 +1,3 @@
-library function_filter;
-
 /// A class that provides debounce functionality for a given function.
 ///
 /// The [Debouncer] class allows you to create a debounced function, which will
