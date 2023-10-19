@@ -60,7 +60,7 @@ FunctionFilter.throttle(
 ```
 
 ## Function Wrapper Examples
-Here are examples to use function wrappers.
+With function wrappers, you can have the function encapsulated within a wrapper and pass around.
 
 ### Debouncer Wrapper
 
@@ -100,3 +100,8 @@ for (int i = 0; i < 5; i++) {
   await Future.delayed(const Duration(milliseconds: 10));
 }
 ```
+
+### Source code
+https://github.com/Mopriestt/function_filter
+
+中文文档制作中。。。

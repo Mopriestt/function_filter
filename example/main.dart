@@ -17,7 +17,7 @@ class _DemoAppState extends State<DemoApp> {
   late final _aggregator = CallAggregator(
     const Duration(seconds: 2),
     5,
-        () => setState(() => _counter++),
+    () => setState(() => _counter++),
   );
 
   @override
@@ -26,30 +26,30 @@ class _DemoAppState extends State<DemoApp> {
       body: Center(
         child: Column(
           children: [
-            SizedBox(height: 100),
+            const SizedBox(height: 100),
             Text('$_counter'),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             MaterialButton(
               onPressed: () => FunctionFilter.debounce(
                 this,
-                const Duration(milliseconds: 500),
-                    () => setState(() => _counter++),
+                const Duration(seconds: 1),
+                () => setState(() => _counter++),
               ),
-              child: Text('Debounce +1'),
+              child: const Text('Debounce +1'),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             MaterialButton(
               onPressed: () => FunctionFilter.throttle(
                 this,
-                const Duration(milliseconds: 500),
-                    () => setState(() => _counter++),
+                const Duration(seconds: 1),
+                () => setState(() => _counter++),
               ),
-              child: Text('Throttle +1'),
+              child: const Text('Throttle +1'),
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             MaterialButton(
               onPressed: () => _aggregator.call(),
-              child: Text('click 5 times in 2 seconds'),
+              child: const Text('click 5 times in 2 seconds'),
             ),
           ],
         ),
