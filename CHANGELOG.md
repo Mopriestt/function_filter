@@ -1,3 +1,7 @@
+## 2.0.2
+
+* Update README and demo app.
+
 ## 2.0.1
 
 * Update demo app.
