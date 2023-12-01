@@ -1,3 +1,7 @@
+## 2.1.0
+
+* Let throttlers correctly handle duration zero.
+
 ## 2.0.2
 
 * Update README and demo app.
