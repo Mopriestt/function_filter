@@ -42,8 +42,7 @@ class FunctionFilter {
     _throttleKeys.add(key);
     if (duration == Duration.zero) {
       _throttleKeys.remove(key);
-    }
-    else {
+    } else {
       Future.delayed(duration, () => _throttleKeys.remove(key));
     }
   }
