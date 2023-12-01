@@ -1,3 +1,7 @@
+## 2.1.1
+
+* Minor fix.
+
 ## 2.1.0
 
 * Let throttlers correctly handle duration zero.

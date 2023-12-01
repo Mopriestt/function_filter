@@ -40,8 +40,12 @@ class FunctionFilter {
     runnable();
 
     _throttleKeys.add(key);
-    if (duration == Duration.zero) _throttleKeys.remove(key);
-    else Future.delayed(duration, () => _throttleKeys.remove(key));
+    if (duration == Duration.zero) {
+      _throttleKeys.remove(key);
+    }
+    else {
+      Future.delayed(duration, () => _throttleKeys.remove(key));
+    }
   }
 
   /// Resets all throttle states, allowing throttled functions to be executed again.
