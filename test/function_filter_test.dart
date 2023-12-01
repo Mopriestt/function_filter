@@ -156,5 +156,12 @@ void main() {
 
       expect(callCounter, 10);
     });
+
+    test('test_zero_duration_throttling', () {
+      for (int i = 0; i < 10; i++) {
+        FunctionFilter.throttle(1, Duration.zero, callback);
+      }
+      expect(callCounter, 10);
+    });
   });
 }

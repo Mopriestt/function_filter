@@ -30,6 +30,11 @@ class Throttler {
   /// of the [_runnable] function, and subsequent calls will be ignored until the
   /// [_duration] has passed.
   void call() {
+    if (_duration == Duration.zero) {
+      _runnable();
+      return;
+    }
+
     if (_locked) return;
 
     _runnable();

@@ -16,4 +16,14 @@ void main() {
     // 0(✓) - 35 - 70 - 105(✓) - 140 - 185 - 210(✓) - 245 - 280 - 315(✓)
     expect(callCounter, 4);
   });
+
+  test('zero_duration_test', () {
+    var callCounter = 0;
+    final throttledCall = Throttler(Duration.zero, () => callCounter++);
+    for (int i = 0; i < 10; i++) {
+      throttledCall.call();
+    }
+
+    expect(callCounter, 10);
+  });
 }
