@@ -1,3 +1,7 @@
+# Function Filter
+
+Language: English | [中文](README-ZH.md)
+
 A Dart library for function filtering utilities, providing tools for debouncing and throttling function executions based on time intervals. This library is well-tested and easy to use, making it a reliable choice for managing function execution rates.
 
 ## Features
@@ -101,7 +105,4 @@ for (int i = 0; i < 5; i++) {
 }
 ```
 
-### Source code
-https://github.com/Mopriestt/function_filter
-
-中文文档制作中。。。
+If you have any questions or suggestions, feel free to open an issue or contribute a Pull Request in the [project repository](https://github.com/Mopriestt/function_filter)! Enjoy using it.

@@ -1,3 +1,7 @@
+## 2.1.3
+
+* Simplified Chinese README.
+
 ## 2.1.2
 
 * Minor fix.
