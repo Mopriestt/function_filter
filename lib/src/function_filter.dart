@@ -9,6 +9,11 @@ class FunctionFilter {
   /// multiple calls to [debounce] with the same [key] occur within the
   /// [duration], only the last one will be executed.
   static void debounce(dynamic key, Duration duration, Function runnable) {
+    if (duration == Duration.zero) {
+      runnable();
+      return;
+    }
+
     late final int callStamp;
     _keyToStamp[key] = callStamp = _stamp++;
 
@@ -39,10 +44,8 @@ class FunctionFilter {
 
     runnable();
 
-    _throttleKeys.add(key);
-    if (duration == Duration.zero) {
-      _throttleKeys.remove(key);
-    } else {
+    if (duration != Duration.zero) {
+      _throttleKeys.add(key);
       Future.delayed(duration, () => _throttleKeys.remove(key));
     }
   }
