@@ -1,3 +1,7 @@
+## 2.1.4
+
+* Fix doc link.
+
 ## 2.1.3
 
 * Simplified Chinese README.
