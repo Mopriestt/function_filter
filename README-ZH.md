@@ -17,7 +17,7 @@ Language: [English](https://github.com/Mopriestt/function_filter/blob/master/REA
 3. **CallAggregator - 聚合**
    用于累积调用次数，一旦在给定的时间内调用次数达到某个阈值，即触发执行一次。
 
-4. 提供**静态函数方法**和**函数封装（Wrapper**两种使用方式，灵活满足不同需求。
+4. 提供**静态函数方法**和**函数封装（Wrapper）** 两种使用方式，灵活满足不同需求。
 
 ---
 
