@@ -1,6 +1,6 @@
 # Function Filter
 
-Language: English | [中文](README-ZH.md)
+Language: English | [中文](https://github.com/Mopriestt/function_filter/blob/master/README-ZH.md)
 
 A Dart library for function filtering utilities, providing tools for debouncing and throttling function executions based on time intervals. This library is well-tested and easy to use, making it a reliable choice for managing function execution rates.
 

@@ -1,6 +1,6 @@
 # Function Filter
 
-Language: [English](README.md) | 中文
+Language: [English](https://github.com/Mopriestt/function_filter/blob/master/README.md) | 中文
 
 一个用于函数过滤的 Dart 库，提供基于时间间隔的函数防抖（debounce）和节流（throttle）等执行工具。该库经过充分测试，使用简单，是管理函数执行速率的可靠选择。
 
