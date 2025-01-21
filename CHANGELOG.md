@@ -1,3 +1,7 @@
+## 2.2.0
+
+* Optimization for zero duration.
+
 ## 2.1.4
 
 * Fix doc link.
