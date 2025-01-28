@@ -1,3 +1,7 @@
+## 2.2.1
+
+* Remove flutter sdk dependency.
+
 ## 2.2.0
 
 * Optimization for zero duration.
