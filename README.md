@@ -1,108 +1,170 @@
 # Function Filter
 
+[![Pub Version](https://img.shields.io/pub/v/function_filter?logo=dart)](https://pub.dev/packages/function_filter)
+[![Pub Points](https://img.shields.io/pub/points/function_filter?logo=dart)](https://pub.dev/packages/function_filter)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Mopriestt/function_filter/blob/master/LICENSE)
+
 Language: English | [中文](https://github.com/Mopriestt/function_filter/blob/master/README-ZH.md)
 
-A Dart library for function filtering utilities, providing tools for debouncing and throttling function executions based on time intervals. This library is well-tested and easy to use, making it a reliable choice for managing function execution rates.
+A lightweight, zero-dependency Dart library for advanced function execution control. It provides robust **Debounce**, **Throttle**, and **Call Aggregation** utilities.
+
+Unlike other libraries that rely solely on string-based keys or heavy Stream implementations (like RxDart), `function_filter` offers both **Static Methods** for quick usage and **Object Wrappers** for strict lifecycle management in complex Flutter apps.
+
+## Why Function Filter?
+
+| Feature | function_filter | easy_debounce | RxDart |
+| :--- | :---: | :---: | :---: |
+| **Static Access** | ✅ | ✅ | ❌ |
+| **Object Wrappers** | ✅ (Safe lifecycle) | ❌ | ✅ |
+| **Key Types** | **Any Object** (prevents collisions) | String Only | N/A |
+| **Dependency Weight** | **Lightweight** | Lightweight | Heavy |
+| **Call Aggregation** | ✅ | ❌ | ✅ (Buffer) |
+
+## Visual Guide
+
+```text
+Debounce (Trailing):
+Events:   --a-b-c-------d--e----->
+Output:   --------------c-------e>
+(Resets timer on every call, executes only after a pause)
+
+Throttle (Leading):
+Events:   --a-b-c-------d--e----->
+Output:   --a-----------d-------->
+(Executes immediately, then ignores calls for a duration)
+```
 
 ## Features
 
- - Debouncer: Debounce function executions to delay their execution until a certain time has passed since the last invocation.
- - Throttler: Throttle function executions to limit their rate and ensure they are executed at most once within a specified interval.
- - CallAggregator: Accumulates function calls and triggers execution when a specified number of calls occur within a given time duration.
- - Offers both static function method and function wrapper for flexible usage.
+* **Debouncer:** Delay function execution until a pause in activity (e.g., Search Input).
+* **Throttler:** Enforce a maximum execution rate (e.g., Button Clicks, Scroll Events).
+* **CallAggregator:** Accumulate calls and trigger in batches (e.g., Analytics Logging).
+* **Flexible Usage:** Choose between **Static Methods** (global/quick) or **Wrappers** (encapsulated/safe).
 
-## Basic Usage
+---
 
-Here are some basic examples of how to use the function_filter library with static methods.
+## 1. Quick Start: Static Methods
 
-### Debouncing
-Debouncing is a technique to delay the execution of a function until a certain amount of time has passed since the last time it was invoked. It is useful in scenarios where you want to trigger an action only after the user has stopped performing a certain action, such as typing or scrolling.
+Best for simple, global, or functional use cases.
 
-````
+**🔥 Pro Tip:** You can use *any* object as a key, not just Strings. Using `this` or a `Widget` instance prevents ID collisions across your app!
+
+### Debouncing (Search Input)
+
+```dart
 import 'package:function_filter/function_filter.dart';
 
-void main() {
+// Inside a State class or logical layer
+void onSearchChanged(String query) {
+  // Using `this` as the key ensures this debounce is unique to this class instance.
+  // No need to worry about string collisions with other widgets!
   FunctionFilter.debounce(
-    'somekey',
-    Duration(milliseconds: 500),
+    this, 
+    const Duration(milliseconds: 500),
     () {
-      // Your debounced function logic here
-      print('Debounced function called.');
+      apiClient.search(query);
+      print('Searching for: $query');
     },
   );
 }
-````
-
-### Throttling
-Throttling limits the rate at which a function can be executed. It ensures that a function is executed at most once every specified interval. This is helpful when you want to limit the number of times a function can run, especially in scenarios like handling scroll events.
-
 ```
-import 'package:function_filter/function_filter.dart';
 
-void main() {
+### Throttling (Button Click)
+
+```dart
+void onFabClicked() {
+  // Prevents double-clicks globally for this specific ID
   FunctionFilter.throttle(
-    'somekey',
-    Duration(milliseconds: 500),
+    'submit-order-btn', 
+    const Duration(seconds: 1),
     () {
-      // Your throttled function logic here
-      print('Throttled function called.');
+      submitOrder();
+      print('Order Submitted!');
     },
   );
 }
 ```
 
-Please note that any key type is allowed for identifying functions in the debounce and throttle methods. You can use various types such as strings, numbers, objects, or any other value that helps uniquely identify your functions.
+---
 
-```
+## 2. Professional Usage: Wrappers (Recommended)
 
-final objKey = Object(); // Can be string, number, object such as Widget or model etc.
-FunctionFilter.throttle(
-  objKey,
-  Duration(milliseconds: 500),
-  () => print('Throttled function called.'),
-);
-```
-
-## Function Wrapper Examples
-With function wrappers, you can have the function encapsulated within a wrapper and pass around.
+Best for Flutter Widgets where you want the filter to be tied to the widget's lifecycle (`dispose`).
 
 ### Debouncer Wrapper
 
-```
-final debouncer = Debouncer(Duration(milliseconds: 500), () {
-  print('Debounced function executed!');
-});
+```dart
+class SearchWidget extends StatefulWidget {
+  @override
+  _SearchWidgetState createState() => _SearchWidgetState();
+}
 
-// Trigger the debounced function multiple times in quick succession.
-for (int i = 1; i <= 5; i ++) {
-    debouncer.call();
-    await Future.delayed(Duration(milliseconds: 300));
+class _SearchWidgetState extends State<SearchWidget> {
+  // 1. Declare the wrapper
+  late final Debouncer _searchDebouncer;
+
+  @override
+  void initState() {
+    super.initState();
+    // 2. Initialize
+    _searchDebouncer = Debouncer(
+      const Duration(milliseconds: 500),
+      // The callback logic can be defined here or dynamically passed in .call()
+    );
+  }
+
+  @override
+  void dispose() {
+    // 3. Clean up automatically prevents memory leaks
+    _searchDebouncer.cancel();
+    super.dispose();
+  }
+
+  void onTextChanged(String text) {
+    // 4. Invoke
+    _searchDebouncer.call(() {
+       print('Searching for: $text');
+    });
+  }
+  
+  // ... build method
 }
 ```
 
-### Throttler Wrapper
-```
-final throttler = Throttler(Duration(milliseconds: 500), () {
-  print('Throttled function executed!');
-});
+### CallAggregator (Batch Processing)
 
-// Trigger the throttled function multiple times in quick succession.
-for (int i = 1; i <= 5; i++) {
-  throttler.call();
-  await Future.delayed(Duration(milliseconds: 300));
+Great for batching network requests or logs.
+
+```dart
+// Aggregates calls: triggers when 5 calls happen OR 2 seconds pass.
+final logger = CallAggregator(
+  const Duration(seconds: 2), 
+  5, 
+  () {
+    print('Batch uploading logs...');
+  }
+);
+
+// Simulate high frequency calls
+for (int i = 0; i < 10; i++) {
+  logger.call(); 
+  await Future.delayed(const Duration(milliseconds: 100));
 }
 ```
 
-### CallAggregator Wrapper
-```
-// Function will be executed if the aggregator gets called for 5 times within 2 seconds.
-final aggregator = CallAggregator(Duration(seconds: 2), 5, () {
-    print('Aggregated calls executed!')
-});
-for (int i = 0; i < 5; i++) {
-  aggregator.call();
-  await Future.delayed(const Duration(milliseconds: 10));
-}
+---
+
+## Installation
+
+Add this to your package's `pubspec.yaml` file:
+
+```yaml
+dependencies:
+  function_filter: ^2.2.1 
 ```
 
-If you have any questions or suggestions, feel free to open an issue or contribute a Pull Request in the [project repository](https://github.com/Mopriestt/function_filter)! Enjoy using it.
+## Contribution
+
+If you have any questions or suggestions, feel free to open an issue or contribute a Pull Request in the [project repository](https://github.com/Mopriestt/function_filter).
+
+Enjoy coding!
