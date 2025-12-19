@@ -1,129 +1,170 @@
 # Function Filter
 
-Language: [English](https://github.com/Mopriestt/function_filter/blob/master/README.md) | 中文
+[![Pub Version](https://img.shields.io/pub/v/function_filter?logo=dart)](https://pub.dev/packages/function_filter)
+[![Pub Points](https://img.shields.io/pub/points/function_filter?logo=dart)](https://pub.dev/packages/function_filter)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Mopriestt/function_filter/blob/master/LICENSE)
 
-一个用于函数过滤的 Dart 库，提供基于时间间隔的函数防抖（debounce）和节流（throttle）等执行工具。该库经过充分测试，使用简单，是管理函数执行速率的可靠选择。
+语言: [English](https://github.com/Mopriestt/function_filter/blob/master/README.md) | 中文
 
----
+一个轻量级、零依赖的 Dart 函数执行频率控制库。它提供了强大的 **防抖 (Debounce)**、**节流 (Throttle)** 以及 **调用聚合 (Call Aggregation)** 工具。
+
+与其他仅依赖字符串 ID 或引入沉重 Stream 实现（如 RxDart）的库不同，`function_filter` 既提供了便捷的**静态方法**，也提供了符合 OOP 工程实践的**对象包装器 (Wrappers)**，完美适配复杂的 Flutter 应用生命周期管理。
+
+## 为什么选择 Function Filter?
+
+| 特性 | function_filter | easy_debounce | RxDart |
+| :--- | :---: | :---: | :---: |
+| **静态调用** | ✅ | ✅ | ❌ |
+| **实例封装** | ✅ (生命周期安全) | ❌ | ✅ |
+| **Key 类型** | **任意对象** (杜绝冲突) | 仅字符串 | N/A |
+| **依赖体积** | **极轻量** | 轻量 | 沉重 |
+| **调用聚合** | ✅ | ❌ | ✅ (Buffer) |
+
+## 可视化原理
+
+```text
+Debounce (防抖 - Trailing):
+事件流:   --a-b-c-------d--e----->
+执行点:   --------------c-------e>
+(每次调用都会重置计时器，仅在停止操作一段时间后执行)
+
+Throttle (节流 - Leading):
+事件流:   --a-b-c-------d--e----->
+执行点:   --a-----------d-------->
+(立即执行第一次，然后在冷却时间内忽略后续调用)
+```
 
 ## 功能特性
 
-1. **Debouncer - 防抖**
-   延迟函数执行，只有在最后一次调用之后经过指定时间才会执行，常用于用户停止输入、停止滚动后再触发操作的场景。
-
-2. **Throttler - 节流**
-   限制函数执行频率，保证在指定时间间隔内函数最多执行一次，可用于滚动、点击等需要限制执行频率的情况。
-
-3. **CallAggregator - 聚合**
-   用于累积调用次数，一旦在给定的时间内调用次数达到某个阈值，即触发执行一次。
-
-4. 提供**静态函数方法**和**函数封装（Wrapper）** 两种使用方式，灵活满足不同需求。
+* **Debouncer (防抖器):** 延迟函数执行，直到活动停止（适用于：搜索框输入）。
+* **Throttler (节流器):** 强制限制最大执行频率（适用于：按钮防连点、滚动事件监听）。
+* **CallAggregator (调用聚合器):** 累积多次调用并批量触发（适用于：埋点日志上传）。
+* **灵活易用:** 可在 **静态方法** (全局/快速) 或 **包装器模式** (封装/安全) 之间自由选择。
 
 ---
 
-## 基础用法
+## 1. 快速开始：静态方法 (Static Methods)
 
-下面示例展示如何使用 `function_filter` 库中的静态方法。
+适用于简单、全局或纯逻辑函数场景。
 
-### 防抖（Debouncing）
+**🔥 专家技巧：** 你可以使用 *任意对象* 作为 Key，而不仅仅是字符串。直接传入 `this` 或 `Widget` 实例，可以从根本上杜绝跨组件的 ID 冲突！
 
-防抖是在最后一次函数调用后等待一段时间再执行的技巧，通常用于在用户停止操作（如停止输入、停止滚动）之后再触发相应的处理逻辑。
+### 防抖 (Debouncing - 搜索框示例)
 
 ```dart
 import 'package:function_filter/function_filter.dart';
 
-void main() {
+// 在 State 类或逻辑层中
+void onSearchChanged(String query) {
+  // 使用 `this` 作为 key 确保了防抖仅针对当前类实例生效。
+  // 不需要担心与其他 Widget 的字符串 ID 发生冲突！
   FunctionFilter.debounce(
-    'somekey',
-    Duration(milliseconds: 500),
+    this, 
+    const Duration(milliseconds: 500),
     () {
-      // 这里是防抖后的函数逻辑
-      print('Debounced function called.');
+      apiClient.search(query);
+      print('正在搜索: $query');
     },
   );
 }
 ```
 
-### 节流（Throttling）
-
-节流在指定间隔内只允许函数执行一次。适合在用户频繁触发某些事件（如滚动、点击）时，限制函数执行频率。
+### 节流 (Throttling - 按钮点击示例)
 
 ```dart
-import 'package:function_filter/function_filter.dart';
-
-void main() {
+void onFabClicked() {
+  // 针对该特定 ID 全局防止双击
   FunctionFilter.throttle(
-    'somekey',
-    Duration(milliseconds: 500),
+    'submit-order-btn', 
+    const Duration(seconds: 1),
     () {
-      // 这里是节流后的函数逻辑
-      print('Throttled function called.');
+      submitOrder();
+      print('订单已提交!');
     },
   );
 }
 ```
 
-> **注意**: 在 `debounce` 和 `throttle` 方法中，`key` 参数可以是任何类型（字符串、数字、对象等），只要能唯一标识要处理的函数即可。例如：
+---
+
+## 2. 进阶用法：包装器模式 (Wrappers - 推荐)
+
+推荐在 Flutter Widget 中使用。通过将过滤器与 Widget 的生命周期 (`dispose`) 绑定，确保内存安全。
+
+### 防抖器包装器 (Debouncer Wrapper)
 
 ```dart
-final objKey = Object(); // 可以是字符串、数字或其他实例
-FunctionFilter.throttle(
-  objKey,
-  Duration(milliseconds: 500),
-  () => print('Throttled function called.'),
+class SearchWidget extends StatefulWidget {
+  @override
+  _SearchWidgetState createState() => _SearchWidgetState();
+}
+
+class _SearchWidgetState extends State<SearchWidget> {
+  // 1. 定义包装器
+  late final Debouncer _searchDebouncer;
+
+  @override
+  void initState() {
+    super.initState();
+    // 2. 初始化
+    _searchDebouncer = Debouncer(
+      const Duration(milliseconds: 500),
+      // 回调逻辑可以在这里定义，也可以在 .call() 中动态传入
+    );
+  }
+
+  @override
+  void dispose() {
+    // 3. 自动清理，防止 Timer 导致的内存泄漏
+    _searchDebouncer.cancel();
+    super.dispose();
+  }
+
+  void onTextChanged(String text) {
+    // 4. 调用
+    _searchDebouncer.call(() {
+       print('Searching for: $text');
+    });
+  }
+  
+  // ... build method
+}
+```
+
+### 调用聚合器 (CallAggregator)
+
+非常适合批量处理网络请求或日志数据。
+
+```dart
+// 聚合调用：当积攒了 5 次调用，或者距离上次处理超过 2 秒时触发。
+final logger = CallAggregator(
+  const Duration(seconds: 2), 
+  5, 
+  () {
+    print('批量上传日志中...');
+  }
 );
-```
 
-
-### 函数封装示例
-
-除了静态方法，function_filter 还支持对函数进行封装（Wrapper），方便在不同场景中复用。
-
-#### Debouncer 封装
-
-```dart
-final debouncer = Debouncer(Duration(milliseconds: 500), () {
-  print('Debounced function executed!');
-});
-
-// 连续多次快速调用
-for (int i = 1; i <= 5; i ++) {
-  debouncer.call();
-  await Future.delayed(Duration(milliseconds: 300));
+// 模拟高频调用
+for (int i = 0; i < 10; i++) {
+  logger.call(); 
+  await Future.delayed(const Duration(milliseconds: 100));
 }
 ```
 
-在上述示例中，只有当最后一次调用结束后经过 500 毫秒，才会真正执行函数。
+---
 
-#### Throttler 封装
+## 安装
 
-```dart
-final throttler = Throttler(Duration(milliseconds: 500), () {
-  print('Throttled function executed!');
-});
+在你的 `pubspec.yaml` 文件中添加依赖：
 
-// 连续多次快速调用
-for (int i = 1; i <= 5; i++) {
-  throttler.call();
-  await Future.delayed(Duration(milliseconds: 300));
-}
+```yaml
+dependencies:
+  function_filter: ^2.2.1
 ```
 
-这里，函数在 500 毫秒内只会执行一次。
+## 贡献
 
-#### CallAggregator 封装
-```dart
-// 如果在 2 秒内累计调用 5 次，则执行函数
-final aggregator = CallAggregator(Duration(seconds: 2), 5, () {
-  print('Aggregated calls executed!');
-});
+如果你有任何问题或建议，欢迎在 [项目仓库](https://github.com/Mopriestt/function_filter) 中提交 Issue 或 Pull Request。
 
-for (int i = 0; i < 5; i++) {
-  aggregator.call();
-  await Future.delayed(const Duration(milliseconds: 10));
-}
-```
-
-当在指定时间（如 2 秒）内累计到达指定调用次数（如 5 次）后，会执行一次封装的函数。
-
-如有任何问题或建议，欢迎在[项目仓库](https://github.com/Mopriestt/function_filter)提出 Issue 或贡献 Pull Request！祝使用愉快。
+Happy Coding!
