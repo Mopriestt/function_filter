@@ -8,7 +8,7 @@ Language: English | [中文](https://github.com/Mopriestt/function_filter/blob/m
 
 A lightweight, zero-dependency Dart library for advanced function execution control. It provides robust **Debounce**, **Throttle**, and **Call Aggregation** utilities.
 
-Unlike other libraries that rely solely on string-based keys or heavy Stream implementations (like RxDart), `function_filter` offers both **Static Methods** for quick usage and **Object Wrappers** for strict lifecycle management in complex Flutter apps.
+Unlike other libraries that rely solely on string-based keys (like easy_debounce) or heavy Stream implementations (like RxDart), `function_filter` offers both **Static Methods** for quick usage and **Object Wrappers** for strict lifecycle management in complex Flutter apps.
 
 ## Why Function Filter?
 
