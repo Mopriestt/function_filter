@@ -1,3 +1,7 @@
+## 2.2.3
+
+* Minor README updates.
+
 ## 2.2.2
 
 * Update README and README-ZH for libraries comparison.
