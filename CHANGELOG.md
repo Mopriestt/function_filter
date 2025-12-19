@@ -1,3 +1,7 @@
+## 2.2.2
+
+* Update README and README-ZH for libraries comparison.
+
 ## 2.2.1
 
 * Remove flutter sdk dependency.

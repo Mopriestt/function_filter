@@ -160,7 +160,7 @@ for (int i = 0; i < 10; i++) {
 
 ```yaml
 dependencies:
-  function_filter: ^2.2.1
+  function_filter: ^2.2.2
 ```
 
 ## 贡献

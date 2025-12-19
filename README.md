@@ -160,7 +160,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  function_filter: ^2.2.1 
+  function_filter: ^2.2.2
 ```
 
 ## Contribution
