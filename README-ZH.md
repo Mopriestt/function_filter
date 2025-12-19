@@ -8,7 +8,7 @@
 
 一个轻量级、零依赖的 Dart 函数执行频率控制库。它提供了强大的 **防抖 (Debounce)**、**节流 (Throttle)** 以及 **调用聚合 (Call Aggregation)** 工具。
 
-与其他仅依赖字符串 ID 或引入沉重 Stream 实现（如 RxDart）的库不同，`function_filter` 既提供了便捷的**静态方法**，也提供了符合 OOP 工程实践的**对象包装器 (Wrappers)**，完美适配复杂的 Flutter 应用生命周期管理。
+与其他仅依赖字符串 ID （如easy_debounce）或引入沉重 Stream 实现（如 RxDart）的库不同，`function_filter` 既提供了便捷的**静态方法**，也提供了符合 OOP 工程实践的**对象包装器 (Wrappers)**，完美适配复杂的 Flutter 应用生命周期管理。
 
 ## 为什么选择 Function Filter?
 
