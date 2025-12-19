@@ -20,6 +20,8 @@ Unlike other libraries that rely solely on string-based keys (like easy_debounce
 | **Dependency Weight** | **Lightweight** | Lightweight | Heavy |
 | **Call Aggregation** | ✅ | ❌ | ✅ (Buffer) |
 
+---
+
 ## Visual Guide
 
 ```text
