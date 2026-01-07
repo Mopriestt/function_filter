@@ -40,7 +40,7 @@ Output:   --a-----------d-------->
 
 * **Debouncer:** Delay function execution until a pause in activity (e.g., Search Input).
 * **Throttler:** Enforce a maximum execution rate (e.g., Button Clicks, Scroll Events).
-* **RateLimiter:** Limit execution frequency over a longer period with token bucket algorithm (e.g., API Rate Limits).
+* **RateLimiter:** Limit execution frequency over a longer period using a sliding window algorithm (e.g., API Rate Limits).
 * **CallAggregator:** Accumulate calls and trigger in batches (e.g., Analytics Logging).
 * **Flexible Usage:** Choose between **Static Methods** (global/quick) or **Wrappers** (encapsulated/safe).
 
@@ -153,7 +153,7 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
-### Rate Limiter (Token Bucket)
+### Rate Limiter (Sliding Window)
 
 Limit the number of calls within a specific time window.
 
