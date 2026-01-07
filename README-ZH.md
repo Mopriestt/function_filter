@@ -147,8 +147,10 @@ final logger = CallAggregator(
 );
 
 // 高频调用
-logger.call();
-await Future.delayed(const Duration(milliseconds: 100));
+for (int i = 0; i < 10; i++) {
+  logger.call(); 
+  await Future.delayed(const Duration(milliseconds: 100));
+}
 ```
 
 ### 限流器 (RateLimiter)

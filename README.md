@@ -143,12 +143,11 @@ Great for batching network requests or logs.
 final logger = CallAggregator(
   const Duration(seconds: 2), 
   5, 
-  () {
-    print('Batch uploading logs...');
-  }
+  () => print('Batch uploading logs...')
 );
 
 // Simulate high frequency calls
+for (int i = 0; i < 10; i++) {
   logger.call(); 
   await Future.delayed(const Duration(milliseconds: 100));
 }
