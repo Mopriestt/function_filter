@@ -1,3 +1,7 @@
+## 2.3.2
+
+* RateLimiter exception handling.
+
 ## 2.3.1
 
 * Minor README update.

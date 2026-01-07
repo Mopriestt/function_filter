@@ -42,10 +42,16 @@ class RateLimiter {
   }
 
   void _run(Function runnable) {
-    runnable();
-    if (interval == Duration.zero) return;
-    _token--;
-    _scheduleReturn(_epoch);
+    if (interval == Duration.zero) {
+      runnable();
+      return;
+    }
+    try {
+      runnable();
+    } finally {
+      _token--;
+      _scheduleReturn(_epoch);
+    }
   }
 
   void _onTokenReturn() {

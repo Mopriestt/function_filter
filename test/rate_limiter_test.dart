@@ -111,5 +111,33 @@ void main() {
       // Queued call should NOT have run
       expect(callCounter, 1);
     });
+
+    test('exception_handling', () async {
+      var callCounter = 0;
+      final rateLimiter = RateLimiter(interval: ms50, maxCalls: 1);
+      final limitedCall = () => rateLimiter.call(() {
+        callCounter++;
+        throw Exception('Test Exception');
+      });
+
+      try {
+        limitedCall();
+      } catch (_) {}
+      
+      expect(callCounter, 1);
+
+      // Token should be consumed even if exception thrown
+      limitedCall();
+      expect(callCounter, 1); // Ignored
+
+      await Future.delayed(ms50);
+      await Future.delayed(ms35);
+
+      // Token should be returned
+      try {
+        limitedCall();
+      } catch (_) {}
+      expect(callCounter, 2);
+    });
   });
 }
