@@ -12,13 +12,14 @@ Unlike other libraries that rely solely on string-based keys (like easy_debounce
 
 ## Why Function Filter?
 
-| Feature | function_filter | easy_debounce | RxDart |
-| :--- | :---: | :---: | :---: |
-| **Static Access** | ✅ | ✅ | ❌ |
-| **Object Wrappers** | ✅ (Safe lifecycle) | ❌ | ✅ |
+| Feature |           function_filter            | easy_debounce | RxDart |
+| :--- |:------------------------------------:| :---: | :---: |
+| **Static Access** |                  ✅                   | ✅ | ❌ |
+| **Object Wrappers** |          ✅ (Safe lifecycle)          | ❌ | ✅ |
 | **Key Types** | **Any Object** (prevents collisions) | String Only | N/A |
-| **Dependency Weight** | **Lightweight** | Lightweight | Heavy |
-| **Call Aggregation** | ✅ | ❌ | ✅ (Buffer) |
+| **Dependency Weight** |           **Lightweight**            | Lightweight | Heavy |
+| **Rate Limiter** |     ✅ **(Sliding Window Based)**     | ❌ | ⚠️ *(Manual composition)* |
+| **Call Aggregation** |                  ✅                   | ❌ | ✅ (Buffer) |
 
 ---
 
@@ -180,7 +181,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  function_filter: ^2.3.0
+  function_filter: ^2.3.1
 ```
 
 ## Contribution
