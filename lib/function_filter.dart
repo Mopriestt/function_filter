@@ -5,10 +5,11 @@
 /// based on time intervals.
 library function_filter;
 
-/// Static util functions
-export 'src/function_filter.dart';
-
 /// Function wrappers
 export 'src/call_aggregator.dart';
 export 'src/debouncer.dart';
+export 'src/emitter.dart';
+
+/// Static util functions
+export 'src/function_filter.dart';
 export 'src/throttler.dart';
