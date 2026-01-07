@@ -40,6 +40,7 @@ Output:   --a-----------d-------->
 
 * **Debouncer:** Delay function execution until a pause in activity (e.g., Search Input).
 * **Throttler:** Enforce a maximum execution rate (e.g., Button Clicks, Scroll Events).
+* **RateLimiter:** Limit execution frequency over a longer period with token bucket algorithm (e.g., API Rate Limits).
 * **CallAggregator:** Accumulate calls and trigger in batches (e.g., Analytics Logging).
 * **Flexible Usage:** Choose between **Static Methods** (global/quick) or **Wrappers** (encapsulated/safe).
 
@@ -138,7 +139,7 @@ class _SearchWidgetState extends State<SearchWidget> {
 Great for batching network requests or logs.
 
 ```dart
-// Aggregates calls: triggers when 5 calls happen OR 2 seconds pass.
+// Aggregates calls: triggers only when 5 calls happen within 2 seconds. If time expires, it resets.
 final logger = CallAggregator(
   const Duration(seconds: 2), 
   5, 
@@ -148,9 +149,27 @@ final logger = CallAggregator(
 );
 
 // Simulate high frequency calls
-for (int i = 0; i < 10; i++) {
   logger.call(); 
   await Future.delayed(const Duration(milliseconds: 100));
+}
+```
+
+### Rate Limiter (Token Bucket)
+
+Limit the number of calls within a specific time window.
+
+```dart
+// Allow max 5 calls every 1 minute
+final rateLimiter = RateLimiter(
+  interval: const Duration(minutes: 1), 
+  maxCalls: 5,
+  replay: true // If true, excess calls are queued and executed when tokens are available
+);
+
+void onApiCall() {
+  rateLimiter.call(() {
+    api.fetchData();
+  });
 }
 ```
 
@@ -162,7 +181,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  function_filter: ^2.2.2
+  function_filter: ^2.3.0
 ```
 
 ## Contribution

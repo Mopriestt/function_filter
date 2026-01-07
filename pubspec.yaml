@@ -1,6 +1,6 @@
 name: function_filter
 description: A Dart library for function filtering utilities, providing tools for debouncing and throttling function executions based on time intervals.
-version: 2.2.3
+version: 2.3.0
 homepage: https://github.com/Mopriestt/function_filter
 
 environment:

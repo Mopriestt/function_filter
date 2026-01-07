@@ -40,6 +40,7 @@ Throttle (节流 - Leading):
 
 * **Debouncer (防抖器):** 延迟函数执行，直到活动停止（适用于：搜索框输入）。
 * **Throttler (节流器):** 强制限制最大执行频率（适用于：按钮防连点、滚动事件监听）。
+* **RateLimiter (限流器):** 在较长时间段内限制执行次数，基于令牌桶算法（适用于：API 速率限制）。
 * **CallAggregator (调用聚合器):** 累积多次调用并批量触发（适用于：埋点日志上传）。
 * **灵活易用:** 可在 **静态方法** (全局/快速) 或 **包装器模式** (封装/安全) 之间自由选择。
 
@@ -138,19 +139,32 @@ class _SearchWidgetState extends State<SearchWidget> {
 非常适合批量处理网络请求或日志数据。
 
 ```dart
-// 聚合调用：当积攒了 5 次调用，或者距离上次处理超过 2 秒时触发。
+// 聚合调用：必须在 2 秒内积攒 5 次调用才会触发。如果超时，计数器将重置。
 final logger = CallAggregator(
   const Duration(seconds: 2), 
   5, 
-  () {
-    print('批量上传日志中...');
-  }
+  () => print('批量上传日志中...')
 );
 
-// 模拟高频调用
-for (int i = 0; i < 10; i++) {
-  logger.call(); 
-  await Future.delayed(const Duration(milliseconds: 100));
+// 高频调用
+logger.call();
+await Future.delayed(const Duration(milliseconds: 100));
+```
+
+### 限流器 (RateLimiter)
+
+限制在特定时间窗口内的调用次数。
+
+```dart
+// 允许每 1 分钟最多调用 5 次
+final rateLimiter = RateLimiter(
+  interval: const Duration(minutes: 1), 
+  maxCalls: 5,
+  replay: true // 如果为 true，超出限制的调用将被加入队列，等待可用令牌时执行
+);
+
+void onApiCall() {
+  rateLimiter.call(() => api.fetchData());
 }
 ```
 
@@ -162,7 +176,7 @@ for (int i = 0; i < 10; i++) {
 
 ```yaml
 dependencies:
-  function_filter: ^2.2.2
+  function_filter: ^2.3.0
 ```
 
 ## 贡献

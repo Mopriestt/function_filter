@@ -11,4 +11,5 @@ export 'src/function_filter.dart';
 /// Function wrappers
 export 'src/call_aggregator.dart';
 export 'src/debouncer.dart';
+export 'src/rate_limiter.dart';
 export 'src/throttler.dart';

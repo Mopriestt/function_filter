@@ -1,3 +1,7 @@
+## 2.3.0
+
+* Introduce RateLimiter wrapper. Allow limiting number of function calls within a time interval.
+
 ## 2.2.3
 
 * Minor README updates.
