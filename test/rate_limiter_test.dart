@@ -41,7 +41,8 @@ void main() {
 
     test('replay_true', () async {
       var callCounter = 0;
-      final rateLimiter = RateLimiter(interval: ms50, maxCalls: 1, replay: true);
+      final rateLimiter =
+          RateLimiter(interval: ms50, maxCalls: 1, replay: true);
       final limitedCall = () => rateLimiter.call(() => callCounter++);
 
       limitedCall();
@@ -50,7 +51,7 @@ void main() {
       limitedCall();
       expect(callCounter, 1); // Queued
 
-      await Future.delayed(ms50); 
+      await Future.delayed(ms50);
       await Future.delayed(ms35); // Wait for replenishment
 
       // The queued call should have run automatically
@@ -64,7 +65,7 @@ void main() {
 
       limitedCall();
       expect(callCounter, 1);
-      
+
       limitedCall();
       expect(callCounter, 1); // Ignored
 
@@ -76,7 +77,8 @@ void main() {
 
     test('dispose', () async {
       var callCounter = 0;
-      final rateLimiter = RateLimiter(interval: ms50, maxCalls: 1, replay: true);
+      final rateLimiter =
+          RateLimiter(interval: ms50, maxCalls: 1, replay: true);
       final limitedCall = () => rateLimiter.call(() => callCounter++);
 
       limitedCall();
@@ -86,7 +88,7 @@ void main() {
       rateLimiter.dispose();
 
       await Future.delayed(ms100);
-      
+
       // Queued call should NOT have run
       expect(callCounter, 1);
 
@@ -97,7 +99,8 @@ void main() {
 
     test('clearQueuedRunnables', () async {
       var callCounter = 0;
-      final rateLimiter = RateLimiter(interval: ms50, maxCalls: 1, replay: true);
+      final rateLimiter =
+          RateLimiter(interval: ms50, maxCalls: 1, replay: true);
       final limitedCall = () => rateLimiter.call(() => callCounter++);
 
       limitedCall();
@@ -116,14 +119,14 @@ void main() {
       var callCounter = 0;
       final rateLimiter = RateLimiter(interval: ms50, maxCalls: 1);
       final limitedCall = () => rateLimiter.call(() {
-        callCounter++;
-        throw Exception('Test Exception');
-      });
+            callCounter++;
+            throw Exception('Test Exception');
+          });
 
       try {
         limitedCall();
       } catch (_) {}
-      
+
       expect(callCounter, 1);
 
       // Token should be consumed even if exception thrown
