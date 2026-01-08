@@ -3,15 +3,9 @@ import 'dart:async';
 /// A class that accumulates function calls and triggers execution
 /// when a specified number of calls occur within a given time duration.
 class CallAggregator {
-  /// The duration within which the required number of calls should be accumulated.
   late final Duration _duration;
-
-  /// The number of calls required to trigger execution of the provided function.
   late final int _requiredCallCount;
-
-  /// The function to execute when the required call count is reached within the duration.
   Function? _runnable;
-
   var _callCounter = 0;
   Timer? _resetTimer;
 
@@ -59,8 +53,10 @@ class CallAggregator {
   void reset() {
     _resetTimer?.cancel();
     _resetTimer = null;
+    _callCounter = 0;
   }
 
+  // Dispose the CallAggregator to free up resources.
   void dispose() {
     _resetTimer?.cancel();
     _resetTimer = null;

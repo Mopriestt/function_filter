@@ -92,7 +92,7 @@ class _DemoAppState extends State<DemoApp> {
 
   @override
   void dispose() {
-    _aggregator.reset();
+    _aggregator.dispose();
     _rateLimiter.dispose();
     super.dispose();
   }

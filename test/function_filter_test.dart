@@ -163,5 +163,35 @@ void main() {
       }
       expect(callCounter, 10);
     });
+
+    test('reset_key_test', () async {
+      const key = 'key';
+      // 1. Start throttle
+      FunctionFilter.throttle(key, ms100, callback);
+      expect(callCounter, 1, reason: 'First call runs');
+
+      // 2. Wait half duration
+      await Future.delayed(ms50);
+
+      // 3. Reset
+      FunctionFilter.resetThrottle(key);
+
+      // 4. Start throttle again (should run)
+      FunctionFilter.throttle(key, ms100, callback);
+      expect(callCounter, 2, reason: 'Call runs after reset');
+
+      // 5. Wait 60ms. Total 110ms from start.
+      // The first throttle's timer (set at T=0 for 100ms) fires at T=100ms.
+      // If buggy, it unlocks 'bug-key'.
+      await Future.delayed(const Duration(milliseconds: 60));
+
+      // 6. Try again. Should be blocked by the SECOND throttle (started at T=50ms, ends at T=150ms).
+      // Current time: T=110ms.
+      FunctionFilter.throttle(key, ms100, callback);
+
+      expect(callCounter, 2,
+          reason:
+              'Third call should be throttled by the second throttle window');
+    });
   });
 }

@@ -4,12 +4,8 @@
 /// delay the execution of the provided function until a certain duration has
 /// passed since the last call to the debounced function.
 class Debouncer {
-  /// The duration to wait before executing the provided function.
   late final Duration _duration;
-
-  /// The function to be executed after the debounce delay.
   Function? _runnable;
-
   var _stamp = 0;
 
   /// Creates a [Debouncer] instance with the specified [_duration] and [_runnable] function.
@@ -41,5 +37,6 @@ class Debouncer {
   /// Cancel all tasks pending execution.
   void reset() => _stamp++;
 
+  /// Dispose the Debouncer to free up resources.
   void dispose() => _runnable = null;
 }

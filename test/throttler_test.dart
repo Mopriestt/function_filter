@@ -38,4 +38,32 @@ void main() {
 
     expect(callCounter, 2);
   });
+
+  test('reset_test', () async {
+    var callCounter = 0;
+    // 100ms throttle
+    final throttler = Throttler(ms100, () => callCounter++);
+
+    // T=0: Call 1. Executed. Locked until T=100.
+    throttler.call();
+    expect(callCounter, 1);
+
+    // T=50: Wait.
+    await Future.delayed(ms50);
+
+    // T=50: Reset. Locked=False.
+    throttler.reset();
+
+    // T=50: Call 2. Executed (since reset). Locked until T=150.
+    throttler.call();
+    expect(callCounter, 2);
+
+    // T=110: Wait 60ms. Total elapsed = 110ms.
+    await Future.delayed(const Duration(milliseconds: 60));
+
+    // T=110: Call 3. Should be throttled (since T < 150).
+    throttler.call();
+
+    expect(callCounter, 2, reason: 'Should be throttled until T=150');
+  });
 }

@@ -20,7 +20,7 @@ class RateLimiter {
 
   final Queue<Function> _queue = Queue();
   int _token;
-  int _epoch = 0;
+  int _stamp = 0;
   bool _disposed = false;
 
   /// Creates a [RateLimiter] instance with the specified [interval], [maxCalls], and optional [replay].
@@ -34,9 +34,9 @@ class RateLimiter {
     this.replay = false,
   }) : _token = maxCalls;
 
-  void _scheduleReturn(int epoch) {
+  void _scheduleReturn(int stamp) {
     Future.delayed(interval, () {
-      if (_disposed || epoch != _epoch) return;
+      if (_disposed || stamp != _stamp) return;
       _onTokenReturn();
     });
   }
@@ -50,7 +50,7 @@ class RateLimiter {
       runnable();
     } finally {
       _token--;
-      _scheduleReturn(_epoch);
+      _scheduleReturn(_stamp);
     }
   }
 
@@ -82,7 +82,7 @@ class RateLimiter {
 
   /// Resets the rate limiter, clearing any queued calls and restoring the call tokens.
   void reset() {
-    _epoch++;
+    _stamp++;
     _token = maxCalls;
     _queue.clear();
   }
@@ -94,6 +94,6 @@ class RateLimiter {
   void dispose() {
     _disposed = true;
     _queue.clear();
-    _epoch++;
+    _stamp++;
   }
 }

@@ -106,6 +106,7 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
   // 1. 定义包装器
   late final Debouncer _searchDebouncer;
+  String _lastQuery = '';
 
   @override
   void initState() {
@@ -113,22 +114,25 @@ class _SearchWidgetState extends State<SearchWidget> {
     // 2. 初始化
     _searchDebouncer = Debouncer(
       const Duration(milliseconds: 500),
-      () => setState(() => api.fetchData())
+      () {
+        // 使用最新状态执行搜索
+        print('正在搜索: $_lastQuery');
+        api.fetchData(_lastQuery);
+      }
     );
   }
 
   @override
   void dispose() {
     // 3. 自动清理，防止 Timer 导致的内存泄漏
-    _searchDebouncer.cancel();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 
   void onTextChanged(String text) {
-    // 4. 调用
-    _searchDebouncer.call(() {
-       print('Searching for: $text');
-    });
+    // 4. 更新状态并调用
+    _lastQuery = text;
+    _searchDebouncer.call();
   }
   
   // ... build method

@@ -106,6 +106,7 @@ class SearchWidget extends StatefulWidget {
 class _SearchWidgetState extends State<SearchWidget> {
   // 1. Declare the wrapper
   late final Debouncer _searchDebouncer;
+  String _lastQuery = '';
 
   @override
   void initState() {
@@ -113,7 +114,11 @@ class _SearchWidgetState extends State<SearchWidget> {
     // 2. Initialize
     _searchDebouncer = Debouncer(
       const Duration(milliseconds: 500),
-      () => setState(() => api.fetchData())
+      () {
+        // Run the actual search using the latest state
+        print('Searching for: $_lastQuery');
+        api.fetchData(_lastQuery);
+      }
     );
   }
 
@@ -125,10 +130,9 @@ class _SearchWidgetState extends State<SearchWidget> {
   }
 
   void onTextChanged(String text) {
-    // 4. Invoke
-    _searchDebouncer.call(() {
-       print('Searching for: $text');
-    });
+    // 4. Update state and trigger debounce
+    _lastQuery = text;
+    _searchDebouncer.call(); 
   }
   
   // ... build method

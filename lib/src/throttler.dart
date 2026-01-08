@@ -4,13 +4,10 @@
 /// limit the rate at which the provided function can be executed. It ensures that
 /// the function is executed no more frequently than a specified duration.
 class Throttler {
-  /// The duration to wait before allowing another execution of the provided function.
   late final Duration _duration;
-
-  /// The function to be executed after throttling.
   Function? _runnable;
-
   var _locked = false;
+  var _stamp = 0;
 
   /// Creates a [Throttler] instance with the specified [duration] and [runnable] function.
   ///
@@ -43,12 +40,17 @@ class Throttler {
 
     _runnable!();
     _locked = true;
-
-    Future.delayed(_duration, () => _locked = false);
+    final currentStamp = _stamp;
+    Future.delayed(_duration, () {
+      if (_stamp == currentStamp) _locked = false;
+    });
   }
 
   /// Resets the throttle, allowing the [_runnable] function to be executed immediately.
-  void reset() => _locked = false;
+  void reset() {
+    _locked = false;
+    _stamp++;
+  }
 
   /// Dispose the throttler and prevent future calls.
   void dispose() => _runnable = null;

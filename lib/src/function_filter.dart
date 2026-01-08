@@ -1,6 +1,6 @@
 /// Function filter utilities for debouncing and throttling.
 class FunctionFilter {
-  static final _keyToStamp = <dynamic, int>{};
+  static final _debouncerKeyToStamp = <dynamic, int>{};
   static var _stamp = 0;
 
   /// Debounces a function execution based on the specified [duration].
@@ -15,24 +15,24 @@ class FunctionFilter {
     }
 
     late final int callStamp;
-    _keyToStamp[key] = callStamp = _stamp++;
+    _debouncerKeyToStamp[key] = callStamp = _stamp++;
 
     Future.delayed(duration, () {
-      if (_keyToStamp[key] == callStamp) {
-        _keyToStamp.remove(key);
+      if (_debouncerKeyToStamp[key] == callStamp) {
+        _debouncerKeyToStamp.remove(key);
         runnable();
       }
     });
   }
 
   /// Resets all debounce states, clearing any pending debounced functions.
-  static void resetAllDebounce() => _keyToStamp.clear();
+  static void resetAllDebounce() => _debouncerKeyToStamp.clear();
 
   /// Resets the debounce state for a specific [key], allowing the associated
   /// function to be debounced again.
-  static void resetDebounce(dynamic key) => _keyToStamp.remove(key);
+  static void resetDebounce(dynamic key) => _debouncerKeyToStamp.remove(key);
 
-  static final _throttleKeys = <dynamic>{};
+  static final _throttleKeysToStamp = <dynamic, int>{};
 
   /// Throttles a function execution based on the specified [duration].
   ///
@@ -40,20 +40,29 @@ class FunctionFilter {
   /// multiple calls to [throttle] with the same [key] occur within the
   /// [duration], only the first one will be executed.
   static void throttle(dynamic key, Duration duration, Function runnable) {
-    if (_throttleKeys.contains(key)) return;
+    if (_throttleKeysToStamp.containsKey(key)) return;
+    if (duration == Duration.zero) {
+      runnable();
+      return;
+    }
 
-    runnable();
+    late final int callStamp;
+    _throttleKeysToStamp[key] = callStamp = _stamp++;
 
-    if (duration != Duration.zero) {
-      _throttleKeys.add(key);
-      Future.delayed(duration, () => _throttleKeys.remove(key));
+    try {
+      runnable();
+    } finally {
+      Future.delayed(duration, () {
+        if (callStamp == _throttleKeysToStamp[key])
+          _throttleKeysToStamp.remove(key);
+      });
     }
   }
 
   /// Resets all throttle states, allowing throttled functions to be executed again.
-  static void resetAllThrottle() => _throttleKeys.clear();
+  static void resetAllThrottle() => _throttleKeysToStamp.clear();
 
   /// Resets the throttle state for a specific [key], allowing the associated
   /// function to be throttled again.
-  static void resetThrottle(dynamic key) => _throttleKeys.remove(key);
+  static void resetThrottle(dynamic key) => _throttleKeysToStamp.remove(key);
 }
