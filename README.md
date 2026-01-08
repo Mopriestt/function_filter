@@ -181,7 +181,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  function_filter: ^2.3.4
+  function_filter: ^2.3.5
 ```
 
 ## Contribution
