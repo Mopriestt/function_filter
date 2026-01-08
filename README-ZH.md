@@ -183,7 +183,7 @@ void onApiCall() {
 
 ```yaml
 dependencies:
-  function_filter: ^2.4.0
+  function_filter: ^2.4.1
 ```
 
 ## 贡献

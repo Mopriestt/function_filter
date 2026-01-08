@@ -1,3 +1,7 @@
+## 2.4.1
+
+* Minor lint fix.
+
 ## 2.4.0
 
 * Support GC friendly dispose for all function wrappers.

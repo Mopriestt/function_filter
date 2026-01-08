@@ -53,8 +53,9 @@ class FunctionFilter {
       runnable();
     } finally {
       Future.delayed(duration, () {
-        if (callStamp == _throttleKeysToStamp[key])
+        if (callStamp == _throttleKeysToStamp[key]) {
           _throttleKeysToStamp.remove(key);
+        }
       });
     }
   }
