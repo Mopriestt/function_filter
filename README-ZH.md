@@ -6,7 +6,7 @@
 
 语言: [English](https://github.com/Mopriestt/function_filter/blob/master/README.md) | 中文
 
-一个轻量级、零依赖的 Dart 函数执行频率控制库。它提供了强大的 **防抖 (Debounce)**、**节流 (Throttle)** 以及 **调用聚合 (Call Aggregation)** 工具。
+一个轻量级、零依赖的 Dart 函数执行频率控制库。它提供了强大的 **防抖 (Debounce)**、**节流 (Throttle)**、**限流(Rate Limiter)** 以及 **调用聚合 (Call Aggregation)** 工具。
 
 与其他仅依赖字符串 ID （如easy_debounce）或引入沉重 Stream 实现（如 RxDart）的库不同，`function_filter` 既提供了便捷的**静态方法**，也提供了符合 OOP 工程实践的**对象包装器 (Wrappers)**，完美适配复杂的 Flutter 应用生命周期管理。
 
@@ -17,7 +17,7 @@
 | **静态调用** |        ✅        | ✅ | ❌ |
 | **实例封装** |   ✅ (生命周期安全)    | ❌ | ✅ |
 | **Key 类型** | **任意对象** (杜绝冲突) | 仅字符串 | N/A |
-| **依赖体积** |     **极轻量**     | 轻量 | 沉重 |
+| **依赖体积** |     **轻量**      | 轻量 | 沉重 |
 | **限流（Rate Limiter）** | ✅ **（滑动窗口模型）**  | ❌ | ⚠️（需手动组合） |
 | **调用聚合** |        ✅        | ❌ | ✅ (Buffer) |
 
@@ -179,7 +179,7 @@ void onApiCall() {
 
 ```yaml
 dependencies:
-  function_filter: ^2.3.3
+  function_filter: ^2.3.4
 ```
 
 ## 贡献

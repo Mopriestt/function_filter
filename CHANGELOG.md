@@ -1,3 +1,7 @@
+## 2.3.4
+
+* Minor README update
+
 ## 2.3.3
 
 * Refresh example
