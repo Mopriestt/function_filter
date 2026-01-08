@@ -26,4 +26,16 @@ void main() {
 
     expect(callCounter, 10);
   });
+
+  test('dispose_test', () async {
+    var callCounter = 0;
+    final throttledCall = Throttler(ms100, () => callCounter++);
+    for (int i = 0; i < 10; i++) {
+      throttledCall.call();
+      await Future.delayed(ms35);
+      if (i == 5) throttledCall.dispose();
+    }
+
+    expect(callCounter, 2);
+  });
 }

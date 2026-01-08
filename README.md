@@ -113,14 +113,14 @@ class _SearchWidgetState extends State<SearchWidget> {
     // 2. Initialize
     _searchDebouncer = Debouncer(
       const Duration(milliseconds: 500),
-      // The callback logic can be defined here or dynamically passed in .call()
+      () => setState(() => api.fetchData())
     );
   }
 
   @override
   void dispose() {
     // 3. Clean up automatically prevents memory leaks
-    _searchDebouncer.cancel();
+    _searchDebouncer.dispose();
     super.dispose();
   }
 

@@ -113,7 +113,7 @@ class _SearchWidgetState extends State<SearchWidget> {
     // 2. 初始化
     _searchDebouncer = Debouncer(
       const Duration(milliseconds: 500),
-      // 回调逻辑可以在这里定义，也可以在 .call() 中动态传入
+      () => setState(() => api.fetchData())
     );
   }
 

@@ -5,10 +5,10 @@
 /// passed since the last call to the debounced function.
 class Debouncer {
   /// The duration to wait before executing the provided function.
-  final Duration _duration;
+  late final Duration _duration;
 
   /// The function to be executed after the debounce delay.
-  final Function _runnable;
+  Function? _runnable;
 
   var _stamp = 0;
 
@@ -18,7 +18,10 @@ class Debouncer {
   /// [_runnable] function after the last call to the debounced function.
   ///
   /// The [_runnable] parameter is the function to be executed after the debounce delay.
-  Debouncer(this._duration, this._runnable);
+  Debouncer(Duration duration, Function runnable) {
+    _runnable = runnable;
+    _duration = duration;
+  }
 
   /// Calls the debounced function.
   ///
@@ -28,12 +31,15 @@ class Debouncer {
   /// the debounce duration, only the last call will result in the execution
   /// of the [_runnable] function.
   void call() {
+    if (_runnable == null) return;
     final callStamp = ++_stamp;
     Future.delayed(_duration, () {
-      if (callStamp == _stamp) _runnable();
+      if (callStamp == _stamp) _runnable?.call();
     });
   }
 
   /// Cancel all tasks pending execution.
   void reset() => _stamp++;
+
+  void dispose() => _runnable = null;
 }
