@@ -1,3 +1,8 @@
+## 2.4.0
+
+* Support GC friendly dispose for all function wrappers.
+* Fix reset bugs.
+
 ## 2.3.5
 
 * Code formatting.
