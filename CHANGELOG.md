@@ -1,3 +1,7 @@
+## 2.4.2
+
+* Support maxBufferedCalls to RateLimiter.
+
 ## 2.4.1
 
 * Minor lint fix.

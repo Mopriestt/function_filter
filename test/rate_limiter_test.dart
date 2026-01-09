@@ -142,5 +142,44 @@ void main() {
       } catch (_) {}
       expect(callCounter, 2);
     });
+    test('max_buffered_calls', () async {
+      var callCounter = 0;
+      final rateLimiter = RateLimiter(
+        interval: ms50,
+        maxCalls: 1,
+        replay: true,
+        maxBufferedCalls: 2,
+      );
+      final limitedCall = (int id) => rateLimiter.call(() => callCounter += id);
+
+      // 1. Consume the token
+      limitedCall(1); // Executes immediately
+      expect(callCounter, 1);
+
+      // 2. Fill the queue (size 2)
+      limitedCall(10); // Queued
+      limitedCall(100); // Queued
+      expect(callCounter, 1); // Still 1
+
+      // 3. Overflow the queue
+      // Queue is [10, 100]. maxReplaySize is 2.
+      // Adding 1000 should drop 10 (oldest) and add 1000.
+      // Queue becomes [100, 1000].
+      limitedCall(1000);
+      expect(callCounter, 1);
+
+      await Future.delayed(ms50);
+      await Future.delayed(ms35); // Wait for replenishment
+
+      // The next call in queue (100) should run.
+      // Queue has 1000 left.
+      expect(callCounter, 101); // 1 + 100
+
+      await Future.delayed(ms50);
+      await Future.delayed(ms35);
+
+      // The last call in queue (1000) should run.
+      expect(callCounter, 1101); // 101 + 1000
+    });
   });
 }

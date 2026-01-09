@@ -18,6 +18,12 @@ class RateLimiter {
   /// when the rate limit window allows.
   final bool replay;
 
+  /// The maximum number of calls that can be queued for replay.
+  ///
+  /// If the queue exceeds this size, the **oldest** calls are dropped (FIFO)
+  /// to make room for new ones.
+  final int? maxBufferedCalls;
+
   final Queue<Function> _queue = Queue();
   int _token;
   int _stamp = 0;
@@ -28,10 +34,12 @@ class RateLimiter {
   /// The [interval] defines the time window.
   /// The [maxCalls] defines the maximum number of allowed executions within that window.
   /// The [replay] flag determines if excess calls should be queued and executed later.
+  /// The [maxBufferedCalls] defines number of calls that can be queued for replay.
   RateLimiter({
     required this.interval,
     required this.maxCalls,
     this.replay = false,
+    this.maxBufferedCalls = null,
   }) : _token = maxCalls;
 
   void _scheduleReturn(int stamp) {
@@ -77,6 +85,9 @@ class RateLimiter {
       _run(runnable);
     } else if (replay) {
       _queue.addLast(runnable);
+      if (maxBufferedCalls != null && _queue.length > maxBufferedCalls!) {
+        _queue.removeFirst();
+      }
     }
   }
 
